@@ -234,7 +234,7 @@ function formatResult(lines = [], size=35) {
                     commands={commands}
                     welcomeMessage={<div>
                             <p>
-                            <Image src="../cs-logo.png" rounded style={{marginBottom: "10px"}}/><br/>
+                            <Image src={process.env.PUBLIC_URL + "/cs-logo.png"} rounded style={{marginBottom: "10px"}}/><br/>
                             <h3>Seja bem vindo ao ConsoleStation</h3><br/>
                             Para ver uma lista de comandos digite <i>help</i> e aperte enter<br/>
                             Para limpar o terminal digite <i>clear</i></p>
