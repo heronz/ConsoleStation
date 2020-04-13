@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/ConsoleStation/static/css/main.e0103c51.chunk.css",
+    "main.js": "/ConsoleStation/static/js/main.1312dc04.chunk.js",
+    "main.js.map": "/ConsoleStation/static/js/main.1312dc04.chunk.js.map",
+    "runtime-main.js": "/ConsoleStation/static/js/runtime-main.4ebae1d0.js",
+    "runtime-main.js.map": "/ConsoleStation/static/js/runtime-main.4ebae1d0.js.map",
+    "static/css/2.e5b99fdb.chunk.css": "/ConsoleStation/static/css/2.e5b99fdb.chunk.css",
+    "static/js/2.b39e8b28.chunk.js": "/ConsoleStation/static/js/2.b39e8b28.chunk.js",
+    "static/js/2.b39e8b28.chunk.js.map": "/ConsoleStation/static/js/2.b39e8b28.chunk.js.map",
+    "index.html": "/ConsoleStation/index.html",
+    "precache-manifest.dfd5c96781116bd77a72028ffad6b202.js": "/ConsoleStation/precache-manifest.dfd5c96781116bd77a72028ffad6b202.js",
+    "service-worker.js": "/ConsoleStation/service-worker.js",
+    "static/css/2.e5b99fdb.chunk.css.map": "/ConsoleStation/static/css/2.e5b99fdb.chunk.css.map",
+    "static/css/main.e0103c51.chunk.css.map": "/ConsoleStation/static/css/main.e0103c51.chunk.css.map",
+    "static/js/2.b39e8b28.chunk.js.LICENSE.txt": "/ConsoleStation/static/js/2.b39e8b28.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4ebae1d0.js",
+    "static/css/2.e5b99fdb.chunk.css",
+    "static/js/2.b39e8b28.chunk.js",
+    "static/css/main.e0103c51.chunk.css",
+    "static/js/main.1312dc04.chunk.js"
+  ]
+}
