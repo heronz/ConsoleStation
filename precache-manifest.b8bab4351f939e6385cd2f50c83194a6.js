@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b3a3a3325e511d65b92d83d8d32f4e5b",
+    "revision": "981a5983f0509699bcbb99f39cd1aa4f",
     "url": "/ConsoleStation/index.html"
   },
   {
-    "revision": "dd8b4d26231bee3ff86a",
+    "revision": "7870512b6b3f347d0ffd",
     "url": "/ConsoleStation/static/css/2.e5b99fdb.chunk.css"
   },
   {
-    "revision": "258aa0f9cf82ee6e7157",
+    "revision": "0f68a1f04aca1709c32f",
     "url": "/ConsoleStation/static/css/main.e0103c51.chunk.css"
   },
   {
-    "revision": "dd8b4d26231bee3ff86a",
-    "url": "/ConsoleStation/static/js/2.b39e8b28.chunk.js"
+    "revision": "7870512b6b3f347d0ffd",
+    "url": "/ConsoleStation/static/js/2.cf627e9c.chunk.js"
   },
   {
     "revision": "872d4ad223c39fec1068d862c0b329ff",
-    "url": "/ConsoleStation/static/js/2.b39e8b28.chunk.js.LICENSE.txt"
+    "url": "/ConsoleStation/static/js/2.cf627e9c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "258aa0f9cf82ee6e7157",
-    "url": "/ConsoleStation/static/js/main.3acd03f1.chunk.js"
+    "revision": "0f68a1f04aca1709c32f",
+    "url": "/ConsoleStation/static/js/main.e6e0f271.chunk.js"
   },
   {
     "revision": "ae36a0075ef2ac4e4cbd",
