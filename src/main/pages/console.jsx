@@ -1,15 +1,20 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import Terminal from 'react-console-emulator'
 import { Button, Row, Image} from 'react-bootstrap';
 import CloseIcon from '@material-ui/icons/Close';
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import GlobalContext from '../helpers/GlobalContext';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-function formatResult(lines = [], size=35) {
+function formatScoreResult(lines = [], size=35) {
     const result_size = size
     const filler_char = '+'
     const filler_line = <div>|{filler_char.repeat(result_size-2)}|<br/></div>
@@ -39,184 +44,43 @@ function formatResult(lines = [], size=35) {
     return <p style={{lineHeight:'13px'}}>{header} {formated_lines} {footer}</p>
 }
 
-  export default props => {
+function formatListResult(title='', itens = []) {
+    var i=0;
+    const list = <List component="nav" className="list-format" aria-label="contacts">
+                    <ListItem className="title">
+                        <ListItemText primary={title} />
+                    </ListItem>
+                    {itens.map(item => {
+                        i++;
+                        return <ListItem >
+                            {i}
+                            <ListItemText inset primary={item} />
+                        </ListItem>
+                    })}
+                </List>
+    return list
+}
+
+export default props => {
     const {global_context, setGlobalContext} = useContext(GlobalContext)
     const [usuario_logado, setUsuarioLogado] = useState(global_context.user);
     const terminal_ref = React.createRef()
-
-    const jogos = {
-        pedra_papel_tesoura: {
-            'descricao': 'Jogo de pedra, papel e tesoura',
-            'instrucoes': 'Use o comando usar <jogada> para jogar contra mim, jogada pode ser pedra, papel ou tesoura',
-            fn: function () {
-                const local_commands = {
-                    voltar: {
-                        description: 'Volta para o menu principal',
-                        usage: 'voltar',
-                        fn: function () {
-                            setCommands(main_menu_commands);
-                            return 'Voltando ao menu principal!'
-                        }
-                    },
-                    usar: {
-                        description: 'Joga contra o computador usando pedra, papel ou tesoura',
-                        usage: 'usar <pedra ou papel ou tesoura>',
-                        fn: function (jogada) {
-                            const exemplo_do_comando = <p>Exemplo do comando: <i>usar</i> pedra</p>
-                            const opcoes = ['pedra', 'papel', 'tesoura'];
-                            const resultado = []
-                            if (opcoes.includes(jogada)) {
-                                const jogada_ai = opcoes[getRndInteger(0,2)]
-                                var venceu_ou_empate = false
-                                resultado.push("Sua Jogada: "+jogada)
-                                resultado.push("Minha jogada(AI): "+jogada_ai)                                
-                                if (jogada_ai === jogada) {
-                                    resultado.push("Um empate!")
-                                    venceu_ou_empate=true
-                                }
-                                else {
-                                    switch (jogada) {
-                                        case 'pedra':
-                                            if (jogada_ai==='tesoura') {
-                                                resultado.push("Você ganhou!")
-                                                venceu_ou_empate=true
-                                            }
-                                            break;
+    useEffect(() => {
+        global_context.setTerminal(terminal_ref.current);
+        global_context.jogos= jogos
+        global_context.formatScoreResult = formatScoreResult
+        global_context.formatListResult = formatListResult
+        global_context.setUsuarioLogado = setUsuarioLogado
+        global_context.setCommands = setCommands
+        global_context.setJogos = setJogos
+        global_context.getRndInteger = getRndInteger
+    })
     
-                                        case 'papel':
-                                            if (jogada_ai==='pedra') {
-                                                resultado.push("Você ganhou!")
-                                                venceu_ou_empate=true
-                                            }
-                                            break;
-    
-                                        case 'tesoura':
-                                            if (jogada_ai==='papel') {
-                                                resultado.push("Você ganhou!")
-                                                venceu_ou_empate=true
-                                            }
-                                            break;
-                                    
-                                        default:
-                                            break;
-                                    }
-                                }
-                                if (!venceu_ou_empate) resultado.push("Você perdeu!")
-                                return <div>{formatResult(resultado)}</div>
-                            }
-                            return <div><p>Opção de jogada inválida!</p>{exemplo_do_comando}</div>
-                        }
-                    },
-                }
-                setCommands(local_commands)
-            }
-        },
-        flip_a_coin: {
-            'descricao': 'Cara ou coroa?',
-            'instrucoes': 'Use o comando jogar para jogar uma moeda e ver se dará cara ou coroa',
-            fn: function () {
-                const local_commands = {
-                    voltar: {
-                        description: 'Volta para o menu principal',
-                        usage: 'voltar',
-                        fn: function () {
-                            setCommands(main_menu_commands);
-                            return 'Voltando ao menu principal!'
-                        }
-                    },
-                    jogar: {
-                        description: 'Joga uma moeda',
-                        usage: 'jogar',
-                        fn: function () {
-                            switch (getRndInteger(0,1)) {
-                                case 0:
-                                    return formatResult(['A moeda roda no ar por algum tempo e caí no chão, você levanta e vê o resultado', '-','Resultado: Cara']);
-                                case 1:
-                                    const rare_message = getRndInteger(0,99);
-                                    var hidden = '';
-                                    if (rare_message > 90) {
-                                        hidden = 'passa por uma figura desconhecida que não estava ali a 5 minutos atrás, '
-                                    }
-                                    return formatResult(['A moeda roda no ar por algum tempo, quica no chão e vai parar longe, você corre atrás dela,'+hidden+' e quando chega vê o resultado', '-', 'Resultado: Coroa']);
-                                default:
-                                    break;
-                            }
-                        }
-                    },
-                }
-                setCommands(local_commands)
-            }
-        },
+    const [jogos, setJogos] = useState(global_context.jogos_instance.make_jogos());
+    const [commands, setCommands] = useState(global_context.commands_instance.make_menu());
+    const callback_terminal = (result) => {
+        if (global_context.next_callback) global_context.next_callback()
     }
-
-    const main_menu_commands = {
-        teste: {
-            description: 'WIP',
-            usage: 'teste',
-            fn: function () { 
-                jogos.flip_a_coin.fn();
-            }
-        },
-        lista: {
-            description: 'Lista de jogos instalados',
-            usage: 'lista',
-            fn: function () { 
-                const lista_jogos = Object.keys(jogos)
-                const lista = ['Lista de jogos instalados:', '-']
-                lista_jogos.forEach(nome_jogo => {
-                    lista.push(nome_jogo + ' : ' + jogos[nome_jogo].descricao)
-                    console.log('jogos[nome_jogo]: ', jogos[nome_jogo]);
-                })
-                return formatResult(lista)
-            }
-        },
-        jogar: {
-            description: 'Jogar um dos jogos disponíveis na memória',
-            usage: 'jogar <nome_do_jogo>',
-            fn: function (nome_do_jogo) {
-                const lista_jogos = Object.keys(jogos)
-                if (lista_jogos.includes(nome_do_jogo)){
-                    jogos[nome_do_jogo].fn()
-                    return [nome_do_jogo, <br/>, jogos[nome_do_jogo].descricao, <br/>, jogos[nome_do_jogo].instrucoes]
-                } else {
-                    return 'Jogo inválido, veja a lista de jogos.'
-                }
-            }
-        },
-        login: {
-            description: 'Efetuar Login.',
-            usage: 'login <usuario> <senha>',
-            fn: function (usuario, senha) {
-                const exemplo_do_comando = <p>Exemplo do comando: <i>login</i> Nome_de_Usuario 1234</p>
-                if (localStorage.getItem('@consolestation/usuario') === usuario &&
-                    localStorage.getItem('@consolestation/senha') === senha) {
-                        setUsuarioLogado(usuario);
-                        setGlobalContext({'user': usuario});
-                        return 'Usuário logado!'
-                }
-                return <div><p>Credenciais Inválidas!</p>{exemplo_do_comando}</div>
-            }
-        },
-        registrar: {
-            description: 'Efetuar cadastro de usuário.',
-            usage: 'registrar <usuario: Máximo de 30 caracteres> <senha: Apenas 4 caracteres>',
-            fn: function (usuario, senha) {
-                const exemplo_do_comando = <p>Exemplo do comando: <i>registrar</i> Nome_de_Usuario 1234</p>
-                if (!usuario || !senha) return <div><p>Senha e Usuário requerido!</p>{exemplo_do_comando}</div>
-                if (senha.length !== 4) return <div><p>Senha Inválida!</p>{exemplo_do_comando}</div>
-                if (usuario.length > 30 || usuario.length === 0) return <div><p>Usuário Inválido!</p>{exemplo_do_comando}</div>
-                localStorage.setItem('@consolestation/usuario', usuario);
-                localStorage.setItem('@consolestation/senha', senha);
-                return <p>
-                    Usuário registrado com sucesso!<br/>
-                    Usuário: {usuario}<br/>
-                    Senha: {senha}<br/>
-                    Faça o Login para usa-lo como usuário atual.
-                </p>
-            }
-        }
-    }    
-    const [commands, setCommands] = useState(main_menu_commands);
 
     return (
           <div className="content-console">
@@ -235,13 +99,19 @@ function formatResult(lines = [], size=35) {
                     welcomeMessage={<div>
                             <p>
                             <Image src={process.env.PUBLIC_URL + "/cs-logo.png"} rounded style={{marginBottom: "10px"}}/><br/>
-                            <h3>Seja bem vindo ao ConsoleStation</h3><br/>
-                            Para ver uma lista de comandos digite <i>help</i> e aperte enter<br/>
-                            Para limpar o terminal digite <i>clear</i></p>
+                            <h3>{global_context.i18n.t("Seja bem vindo ao ConsoleStation")}</h3><br/>
+                            {global_context.i18n.t("Para ver uma lista de comandos digite ")}<i>{global_context.i18n.t("ajuda")}</i><br/>
+                            {global_context.i18n.t("Para limpar o terminal digite ")}<i>{global_context.i18n.t("limpar")}</i>                            
+                            </p>
                         </div>}
                     promptLabel={usuario_logado + '@Consolestation:~$'}
+                    commandCallback={callback_terminal}
                     dangerMode
                     autoFocus
+                    noDefaults
+                    promptLabelStyle={{
+                        color: "#6890ff"
+                    }}
                     style={{
                         width:"98%", 
                         height:"92%", 
@@ -249,10 +119,13 @@ function formatResult(lines = [], size=35) {
                         minWidth: "98%", 
                         minHeight: "2%",
                         position: "absolute",
+                        borderRadius: "0 0 5px 5px",
                         top: 0,
                         bottom: 0,
                         left: 0,
                         right: 0,
+                        borderBottom: 'solid',
+                        borderRight: 'solid'
                         }}
                     contentStyle={{
                         height: "95%"
